@@ -4,75 +4,86 @@ Helper functions for display and formatting
 """
 
 def print_grid(grid, title="Sudoku Grid"):
-    """Print Sudoku grid in a readable format"""
-    print("\n" + title)
-    print("─" * 37)
+    """Print Sudoku grid in fancy box style"""
+    print(f"\n{title}")
+    print("┌─────────┬─────────┬─────────┐")
     
     for i, row in enumerate(grid):
-        if i % 3 == 0 and i != 0:
-            print("├───────────┼───────────┼───────────┤")
+        # Print horizontal separator every 3 rows
+        if i > 0 and i % 3 == 0:
+            print("├─────────┼─────────┼─────────┤")
         
-        row_str = ""
+        # Build row string
+        row_str = "│"
         for j, val in enumerate(row):
-            if j % 3 == 0 and j != 0:
-                row_str += "│ "
-            
             if val == 0:
-                row_str += ". "
+                row_str += " . "
             else:
-                row_str += f"{val} "
+                row_str += f" {val} "
+            
+            # Add vertical separator every 3 columns
+            if (j + 1) % 3 == 0:
+                row_str += "│"
         
-        print(f"│ {row_str}│")
+        print(row_str)
     
-    print("─" * 37 + "\n")
+    print("└─────────┴─────────┴─────────┘\n")
+
+
 
 def compare_grids(original, solved, expected=None):
-    """Display original and solved grids side by side"""
+    """Display original and solved grids side by side with clean formatting"""
     print("\n" + "="*80)
     print("PUZZLE COMPARISON")
     print("="*80)
     
-    print("\nORIGINAL PUZZLE:" + " "*20 + "AI SOLUTION:")
-    print("─" * 37 + "     " + "─" * 37)
+    # Print headers
+    print("\n" + "ORIGINAL PUZZLE".center(37) + "     " + "AI SOLUTION".center(37))
+    print("┌─────────┬─────────┬─────────┐     ┌─────────┬─────────┬─────────┐")
     
     for i in range(9):
-        if i % 3 == 0 and i != 0:
-            print("├───────────┼───────────┼───────────┤" + "     " + 
-                  "├───────────┼───────────┼───────────┤")
+        if i > 0 and i % 3 == 0:
+            print("├─────────┼─────────┼─────────┤     ├─────────┼─────────┼─────────┤")
         
         # Original grid row
-        orig_row = ""
+        orig_row = "│"
         for j in range(9):
-            if j % 3 == 0 and j != 0:
-                orig_row += "│ "
-            orig_row += f"{original[i][j] if original[i][j] != 0 else '.'} "
+            val = original[i][j]
+            orig_row += f" {val if val != 0 else '.'} "
+            if (j + 1) % 3 == 0 and j < 8:
+                orig_row += "│"
+        orig_row += "│"
         
         # Solved grid row
-        solved_row = ""
+        solved_row = "│"
         for j in range(9):
-            if j % 3 == 0 and j != 0:
-                solved_row += "│ "
-            solved_row += f"{solved[i][j] if solved[i][j] != 0 else '.'} "
+            val = solved[i][j]
+            solved_row += f" {val if val != 0 else '.'} "
+            if (j + 1) % 3 == 0 and j < 8:
+                solved_row += "│"
+        solved_row += "│"
         
-        print(f"│ {orig_row}│     │ {solved_row}│")
+        print(f"{orig_row}     {solved_row}")
     
-    print("─" * 37 + "     " + "─" * 37)
+    print("└─────────┴─────────┴─────────┘     └─────────┴─────────┴─────────┘")
     
     if expected:
         print("\nEXPECTED SOLUTION:")
-        print("─" * 37)
+        print("┌─────────┬─────────┬─────────┐")
         for i in range(9):
-            if i % 3 == 0 and i != 0:
-                print("├───────────┼───────────┼───────────┤")
+            if i > 0 and i % 3 == 0:
+                print("├─────────┼─────────┼─────────┤")
             
-            exp_row = ""
+            exp_row = "│"
             for j in range(9):
-                if j % 3 == 0 and j != 0:
-                    exp_row += "│ "
-                exp_row += f"{expected[i][j]} "
+                val = expected[i][j]
+                exp_row += f" {val} "
+                if (j + 1) % 3 == 0 and j < 8:
+                    exp_row += "│"
+            exp_row += "│"
             
-            print(f"│ {exp_row}│")
-        print("─" * 37)
+            print(exp_row)
+        print("└─────────┴─────────┴─────────┘")
     
     print("="*80 + "\n")
 
